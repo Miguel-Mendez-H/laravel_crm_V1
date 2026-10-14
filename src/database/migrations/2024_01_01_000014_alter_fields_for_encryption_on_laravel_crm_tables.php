@@ -1,0 +1,60 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AlterFieldsForEncryptionOnLaravelCrmTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        // Always widen encryptable columns. Encryption may be enabled
+        // post-install, and the sample data seeder writes ciphertext
+        // values regardless of the env flag — both overflow varchar(255).
+        Schema::table(config('laravel-crm.db_table_prefix').'people', function (Blueprint $table) {
+            $table->string('title', 500)->nullable()->change();
+            $table->string('first_name', 500)->change();
+            $table->string('middle_name', 500)->nullable()->change();
+            $table->string('last_name', 500)->nullable()->change();
+            $table->string('maiden_name', 500)->nullable()->change();
+        });
+
+        Schema::table(config('laravel-crm.db_table_prefix').'organizations', function (Blueprint $table) {
+            $table->string('name', 1000)->nullable()->change();
+        });
+
+        Schema::table(config('laravel-crm.db_table_prefix').'addresses', function (Blueprint $table) {
+            $table->string('address', 1000)->nullable()->change();
+            $table->string('line1', 1000)->nullable()->change();
+            $table->string('line2', 1000)->nullable()->change();
+            $table->string('line3', 1000)->nullable()->change();
+            $table->string('code', 500)->nullable()->change();
+            $table->string('city', 500)->nullable()->change();
+            $table->string('state', 500)->nullable()->change();
+            $table->string('country', 500)->nullable()->change();
+        });
+
+        Schema::table(config('laravel-crm.db_table_prefix').'emails', function (Blueprint $table) {
+            $table->string('address', 500)->nullable()->change();
+        });
+
+        Schema::table(config('laravel-crm.db_table_prefix').'phones', function (Blueprint $table) {
+            $table->string('number', 500)->nullable()->change();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        // No-op — narrowing columns may truncate existing data.
+    }
+}

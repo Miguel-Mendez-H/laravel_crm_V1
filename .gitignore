@@ -1,0 +1,5 @@
+# Respaldos de base de datos y archivos: contienen datos de clientes, se llevan aparte
+/backup/
+
+# Copias automáticas que deja el instalador del CRM
+*.backup-*

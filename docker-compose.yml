@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    container_name: laravelcrm_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/var/www/html
+      - vendor:/var/www/html/vendor
+    environment:
+      PHP_CLI_SERVER_WORKERS: 4
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: laravelcrm_db
+    environment:
+      MYSQL_DATABASE: laravel_crm
+      MYSQL_USER: crm
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      retries: 20
+
+volumes:
+  dbdata:
+  vendor:

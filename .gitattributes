@@ -1,0 +1,6 @@
+# Fuerza saltos de línea LF: el Dockerfile y los scripts se ejecutan en Linux dentro del contenedor
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
